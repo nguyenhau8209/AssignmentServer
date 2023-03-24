@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <title>Trang chủ</title>
+
+</head>
+
+<body>
+    <div class="container-fluid" style="background-color: gainsboro;">
+        <div class="d-flex bd-highlight ">
+            <div class="d-flex">
+                <a class="nav-link me-2" href="/product" style="margin-left: 5px; display: flex; align-items: center;">
+                    <img src="https://media.istockphoto.com/id/1269785368/vi/vec-to/logo-x%C3%A2y-d%E1%BB%B1ng-%C4%91%C6%B0%E1%BB%9Dng-b%E1%BB%99-kh%C3%A1i-ni%E1%BB%87m-bi%E1%BB%83n-hi%E1%BB%87u-s%C3%A1ng-t%E1%BA%A1o-b%E1%BA%A3o-tr%C3%AC-%C4%91%C6%B0%E1%BB%9Dng-b%E1%BB%99-m%E1%BA%ABu-thi%E1%BA%BFt-k%E1%BA%BF-l%C3%A1t-khu%C3%B4n.jpg?s=612x612&w=0&k=20&c=mJQsHpg8e2KvhX6v0QSCK_3HDiB6vgcH44lzm9nMLMQ=" style="width: 35px; height: 35px;">
+                    <p style="margin-left: 5px;margin-top: 8px ;display: inline-block;" class="me-2">Trang
+                        Chủ</p>
+                </a>
+
+            </div>
+            <div class="ms-auto bd-highlight">
+                <nav class="navbar navbar-expand-sm ">
+                    <div class="container-fluid">
+                        <ul class="navbar-nav">
+                            <form class="d-flex mt-3 mb-3" role="search">
+                                <div class="input-group mx-5">
+                                    <input type="search" class="form-control" placeholder="Search">
+                                    <button class="btn btn-warning " type="submit"><i class="fa fa-search"></i></button>
+                                </div>
+                            </form>
+                            <li class="nav-item dropdown mt-3 mb-3">
+                                <a class="nav-link d-flex align-items-center" href="#" data-bs-toggle="dropdown">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/660/660376.png" alt="" style="width: 30px; height: 30px;">
+                                </a>
+                                <ul class="dropdown-menu text-center dropdown-menu-sm-end">
+                                    <p class="fw-bold">MENU</p>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Thông
+                                            tin</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>Chỉnh
+                                            sửa</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="/login"><i
+                                                class="fas fa-sign-out-alt me-2"></i>Đăng xuất</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <div class="row ">
+        <div class="col-sm-2 bg-dark bg-gradient px-4 mx-2">
+            <div class="text-center ">
+                <div class=" d-flex m-3" style="margin-left: 20px;">
+                    <img src="{{image}}" style="width: 35px; height: 35px; border-radius: 50px " class="mx-1 ">
+                    <div style="margin-left: 5px; color: white;">
+                        <p class="m-0">{{fullname}}</p>
+                        <p class="m-0" style="font-size: 12px;">Admin</p>
+                    </div>
+                </div>
+                <label for="" class="fw-bold fs-5" style="color: white;">Chức Năng</label>
+            </div>
+            <nav class="navbar">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/addProduct" style="color: white;"><i class="fas fa-plus"></i> Thêm
+                            Sản Phẩm</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/listUser" style="color: white;"><i class="fas fa-user"></i> Quản lý tài
+                            khoản</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/hoadon" style="color: white;"><i class="fas fa-credit-card"></i>
+                            Thanh toán hóa đơn</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-sm-9 bg-light mt-4 mx-4">
+            <div class="text-center fw-bold fs-4 mt-1">
+                <p>Danh Sách Sản Phẩm</p>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Mã sản phẩm</th>
+                        <th scope="col">Tên sản phẩm</th>
+                        <th scope="col">Đơn giá</th>
+                        <th scope="col">Hình ảnh</th>
+                        <th scope="col">Màu sắc</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                {{!-- <tbody class="table-group-divider">
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>PH1</td>
+                        <td>Quần jean</td>
+                        <td>100000 VNĐ</td>
+                        <td>Null</td>
+                        <td>Xanh dương</td>
+                        <td class="text-center">
+                            <a class="fas fa-edit text-decoration-none"></a>
+                            <a class="fas fa-trash ms-1 text-decoration-none"></a>
+                            <a class="fas fa-eye ms-1 text-decoration-none"></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>PH2</td>
+                        <td>Áo thun</td>
+                        <td>170000 VNĐ</td>
+                        <td>Null</td>
+                        <td>Hồng</td>
+                        <td class="text-center">
+                            <a class="fas fa-edit text-decoration-none"></a>
+                            <a class="fas fa-trash ms-1 text-decoration-none"></a>
+                            <a class="fas fa-eye ms-1 text-decoration-none"></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>PH3</td>
+                        <td>Áo polo</td>
+                        <td>200000 VNĐ</td>
+                        <td>Null</td>
+                        <td>Đen</td>
+                        <td class="text-center">
+                            <a class="fas fa-edit text-decoration-none"></a>
+                            <a class="fas fa-trash ms-1 text-decoration-none"></a>
+                            <a class="fas fa-eye ms-1 text-decoration-none"></a>
+                        </td>
+                    </tr>
+                    
+                </tbody> --}}
+                <tbody class="table-group-divider">
+                    {{#each arrPro}}
+                    <tr>
+                        <th scope="row">{{this.masp}}</th>
+                        <td>{{this.namePro}}</td>
+                        <td>{{this.price}}</td>
+                        <td>{{this.imagePro}}</td>
+                        <td>{{this.colorPro}}</td>
+                        <td class="text-center">
+                            <a class="fas fa-edit text-decoration-none"></a>
+                            <a class="fas fa-trash ms-1 text-decoration-none"></a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

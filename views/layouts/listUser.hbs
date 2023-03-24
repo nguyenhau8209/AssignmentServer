@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <title>Danh sách người dùng</title>
+</head>
+
+<body>
+    {{{body}}}
+    <div class="row ">
+        <div class="col-sm-2 bg-dark bg-gradient px-4 mx-2">
+            <div class="text-center ">
+                <div class=" d-flex m-3" style="margin-left: 20px;">
+                    <img src="{{_image}}" style="width: 35px; height: 35px; border-radius: 50px " class="mx-1">
+                    <div style="margin-left: 5px; color: white;">
+                        <span class="m-0">{{_fullname}}</span>
+                        <p class="m-0" style="font-size: 12px;">Admin</p>
+                    </div>
+                </div>
+                <label for="" class="fw-bold fs-5" style="color: white;">Chức Năng</label>
+            </div>
+            <nav class="navbar">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/addProduct" style="color: white;"><i class="fas fa-plus"></i> Thêm
+                            Sản Phẩm</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/listUser" style="color: white;"><i class="fas fa-user"></i> Quản lý
+                            tài
+                            khoản</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/hoadon" style="color: white;"><i class="fas fa-credit-card"></i>
+                            Thanh toán hóa đơn</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-sm-9 bg-light mt-4 mx-4">
+            <div class="text-center fw-bold fs-4 mt-1">
+                <p>Danh Sách Người Dùng</p>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Mật khẩu</th>
+                        <th scope="col">Fullname</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {{#each arr}}
+                    <tr>
+                        <th scope="row">{{this.id}}</th>
+                        <td>{{this.email}}</td>
+                        <td>{{this.password}}</td>
+                        <td>{{this.fullname}}</td>
+                        <td>{{this.image}}</td>
+                        <td class="text-center">
+                            <a class="fas fa-edit text-decoration-none"></a>
+                            <a class="fas fa-trash ms-1 text-decoration-none"></a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
