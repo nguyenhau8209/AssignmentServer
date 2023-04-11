@@ -19,13 +19,13 @@
 <body>
     {{{body}}}
     <div class="row ">
-        <div class="col-sm-2 bg-dark bg-gradient px-4 mx-2">
+        <div class="col-sm-2 bg-primary bg-gradient px-4 mx-2">
             <div class="text-center ">
                 <div class=" d-flex m-3" style="margin-left: 20px;">
                     <img src="{{_image}}" style="width: 35px; height: 35px; border-radius: 50px " class="mx-1">
                     <div style="margin-left: 5px; color: white;">
                         <span class="m-0">{{_fullname}}</span>
-                        <p class="m-0" style="font-size: 12px;">Admin</p>
+                        
                     </div>
                 </div>
                 <label for="" class="fw-bold fs-5" style="color: white;">Chức Năng</label>
@@ -41,38 +41,36 @@
                             tài
                             khoản</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/hoadon" style="color: white;"><i class="fas fa-credit-card"></i>
-                            Thanh toán hóa đơn</a>
-                    </li>
+                    
                 </ul>
             </nav>
         </div>
         <div class="col-sm-9 bg-light mt-4 mx-4">
-            <h2>Add Product</h2>
+            <h2>{{viewTitle}}</h2>
             {{#if check}}
             <span style="color: red">{{check}}</span>
             {{/if}}
             <form action="/addProduct" method="post">
+            <input type="hidden" name="idPro" value="{{data._id}}">
                 <div class="mb-3 mt-3">
                     <label for="email" class="form-label">Key Product:</label>
-                    <input type="text" class="form-control" id="key" placeholder="Key Product" name="masp">
+                    <input type="text" class="form-control" id="key" placeholder="Key Product" name="masp" value="{{data.masp}}">
                 </div>
                 <div class="mb-3">
                     <label for="pwd" class="form-label">Name Product</label>
-                    <input type="text" class="form-control" id="pwd" placeholder="name" name="namePro">
+                    <input type="text" class="form-control" id="pwd" placeholder="name" name="namePro" value="{{data.namePro}}">
                 </div>
                 <div class="mb-3">
                     <label for="pwd" class="form-label">Price Product</label>
-                    <input type="text" class="form-control" id="pwd" placeholder="price" name="price">
+                    <input type="text" class="form-control" id="pwd" placeholder="price" name="price" value="{{data.price}}">
                 </div>
                 <div class="mb-3">
                     <label for="pwd" class="form-label">Image Product</label>
-                    <input type="text" class="form-control" id="pwd" placeholder="url" name="imagePro">
+                    <input type="text" class="form-control" id="pwd" placeholder="url" name="imagePro" value="{{data.imagePro}}">
                 </div>
                 <div class="mb-3">
                     <label for="pwd" class="form-label">Color Product</label>
-                    <input type="text" class="form-control" id="pwd" placeholder="color" name="colorPro">
+                    <input type="text" class="form-control" id="pwd" placeholder="color" name="colorPro" value="{{data.colorPro}}">
                 </div>
                 <button type="submit" class="btn" style="background-color: aqua; color: black">Submit</button>
             </form>

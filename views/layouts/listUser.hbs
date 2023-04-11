@@ -13,14 +13,17 @@
 <body>
     {{{body}}}
     <div class="row ">
-        <div class="col-sm-2 bg-dark bg-gradient px-4 mx-2">
+        <div class="col-sm-2 bg-primary bg-gradient px-4 mx-2">
             <div class="text-center ">
                 <div class=" d-flex m-3" style="margin-left: 20px;">
-                    <img src="{{_image}}" style="width: 35px; height: 35px; border-radius: 50px " class="mx-1">
+                    
+                    <img src="{{image}}" style="width: 35px; height: 35px; border-radius: 50px " class="mx-1">
+                    
                     <div style="margin-left: 5px; color: white;">
-                        <span class="m-0">{{_fullname}}</span>
-                        <p class="m-0" style="font-size: 12px;">Admin</p>
+                        <span class="m-0">{{fullname}}</span>
+                        
                     </div>
+                    
                 </div>
                 <label for="" class="fw-bold fs-5" style="color: white;">Chức Năng</label>
             </div>
@@ -35,10 +38,7 @@
                             tài
                             khoản</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/hoadon" style="color: white;"><i class="fas fa-credit-card"></i>
-                            Thanh toán hóa đơn</a>
-                    </li>
+                    
                 </ul>
             </nav>
         </div>
@@ -54,20 +54,22 @@
                         <th scope="col">Mật khẩu</th>
                         <th scope="col">Fullname</th>
                         <th scope="col">Image</th>
+                        <th scope="col">Role</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
-                    {{#each arr}}
+                    {{#each users}}
                     <tr>
-                        <th scope="row">{{this.id}}</th>
+                        <th scope="row">{{this.order}}</th>
                         <td>{{this.email}}</td>
                         <td>{{this.password}}</td>
                         <td>{{this.fullname}}</td>
-                        <td>{{this.image}}</td>
+                        <td class="text-center"><img src="{{this.image}}" alt="" srcset="" style="width: 50px; height: 50px;"></td>
+                        <td>{{this.role}}</td>
                         <td class="text-center">
-                            <a class="fas fa-edit text-decoration-none"></a>
-                            <a class="fas fa-trash ms-1 text-decoration-none"></a>
+                            <button class="btn btn-warning"><a class="fas fa-edit text-decoration-none" href="/edit/{{this._id}}"></a></button>
+                            <button class="btn btn-danger"><a class="fas fa-trash ms-1 text-decoration-none" href="/delete/{{this._id}}"></a></button>
                         </td>
                     </tr>
                     {{/each}}

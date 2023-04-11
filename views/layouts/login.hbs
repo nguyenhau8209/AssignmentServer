@@ -33,9 +33,9 @@
                 <div class="w-[250px] h-[290px] bg-white rounded-[10px] p-4">
                     <h2 class="w-[130px] fw-bold fs-5">Log into your Acount</h2>
                     {{#if check}}
-                    <span style="color: red">{{check}}</span>
+                    <span style="color: red; font-size: 12px;">{{check}}</span>
                     {{/if}}
-                    <form action="/login" method="post">
+                    <form action="/login" method="post" autocomplete="off">
                         <div class="mb-1">
                             <label for="exampleFormControlInput1" class="form-label text-[12px] text-secondary">Email
                                 address</label>

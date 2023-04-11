@@ -38,7 +38,7 @@
                                 </a>
                                 <ul class="dropdown-menu text-center dropdown-menu-sm-end">
                                     <p class="fw-bold">MENU</p>
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Thông
+                                    <li><a class="dropdown-item" href="/edit/{{userId}}"><i class="fas fa-user me-2"></i>Thông
                                             tin</a>
                                     </li>
                                     <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>Chỉnh
@@ -56,13 +56,13 @@
     </div>
 
     <div class="row ">
-        <div class="col-sm-2 bg-dark bg-gradient px-4 mx-2">
+        <div class="col-sm-2 bg-primary bg-gradient px-4 mx-2">
             <div class="text-center ">
                 <div class=" d-flex m-3" style="margin-left: 20px;">
                     <img src="{{image}}" style="width: 35px; height: 35px; border-radius: 50px " class="mx-1 ">
                     <div style="margin-left: 5px; color: white;">
                         <p class="m-0">{{fullname}}</p>
-                        <p class="m-0" style="font-size: 12px;">Admin</p>
+                        
                     </div>
                 </div>
                 <label for="" class="fw-bold fs-5" style="color: white;">Chức Năng</label>
@@ -77,10 +77,7 @@
                         <a class="nav-link" href="/listUser" style="color: white;"><i class="fas fa-user"></i> Quản lý tài
                             khoản</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/hoadon" style="color: white;"><i class="fas fa-credit-card"></i>
-                            Thanh toán hóa đơn</a>
-                    </li>
+                    
                 </ul>
             </nav>
         </div>
@@ -91,6 +88,7 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
+                        <th scope="col">STT</th>
                         <th scope="col">Mã sản phẩm</th>
                         <th scope="col">Tên sản phẩm</th>
                         <th scope="col">Đơn giá</th>
@@ -99,59 +97,19 @@
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
-                {{!-- <tbody class="table-group-divider">
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>PH1</td>
-                        <td>Quần jean</td>
-                        <td>100000 VNĐ</td>
-                        <td>Null</td>
-                        <td>Xanh dương</td>
-                        <td class="text-center">
-                            <a class="fas fa-edit text-decoration-none"></a>
-                            <a class="fas fa-trash ms-1 text-decoration-none"></a>
-                            <a class="fas fa-eye ms-1 text-decoration-none"></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>PH2</td>
-                        <td>Áo thun</td>
-                        <td>170000 VNĐ</td>
-                        <td>Null</td>
-                        <td>Hồng</td>
-                        <td class="text-center">
-                            <a class="fas fa-edit text-decoration-none"></a>
-                            <a class="fas fa-trash ms-1 text-decoration-none"></a>
-                            <a class="fas fa-eye ms-1 text-decoration-none"></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>PH3</td>
-                        <td>Áo polo</td>
-                        <td>200000 VNĐ</td>
-                        <td>Null</td>
-                        <td>Đen</td>
-                        <td class="text-center">
-                            <a class="fas fa-edit text-decoration-none"></a>
-                            <a class="fas fa-trash ms-1 text-decoration-none"></a>
-                            <a class="fas fa-eye ms-1 text-decoration-none"></a>
-                        </td>
-                    </tr>
-                    
-                </tbody> --}}
+                
                 <tbody class="table-group-divider">
-                    {{#each arrPro}}
+                    {{#each products}}
                     <tr>
+                        <th>{{this.order}}</th>
                         <th scope="row">{{this.masp}}</th>
                         <td>{{this.namePro}}</td>
                         <td>{{this.price}}</td>
-                        <td>{{this.imagePro}}</td>
+                        <td  class="text-center"><img src="{{this.imagePro}}" alt=""  style="width: 50px; height: 50px;"></td>
                         <td>{{this.colorPro}}</td>
                         <td class="text-center">
-                            <a class="fas fa-edit text-decoration-none"></a>
-                            <a class="fas fa-trash ms-1 text-decoration-none"></a>
+                            <button class="btn btn-warning"><a class="fas fa-edit text-decoration-none" href="/editPro/{{this._id}}"></a></button>
+                            <button class="btn btn-danger"><a class="fas fa-trash ms-1 text-decoration-none" href="/deletePro/{{this._id}}"></a></button>
                         </td>
                     </tr>
                     {{/each}}

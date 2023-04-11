@@ -2,8 +2,12 @@ const express = require("express");
 const expressHbs = require('express-handlebars');
 const app = express();
 const bodyParser = require("body-parser");
+const { authUser, authAdmin } = require('./basicAuth')
+const mongoose = require("mongoose");
+const uri = 'mongodb+srv://hauncph23182:KDCmBivkwk8nWTJI@mydatabase.inj6nec.mongodb.net/Asignment?retryWrites=true&w=majority'
 // const login = require('./login');
-
+const userModel = require('./model/user');
+const productModel = require('./model/product');
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static('public'));
@@ -13,6 +17,7 @@ app.engine('.hbs', expressHbs.engine({
   defaultLayout: 'login',
   layoutsDir: "views/layouts/"
 }));
+
 
 app.set('view engine', '.hbs');
 app.set('views', './views');
@@ -45,122 +50,310 @@ app.get('/signin', (req, res) => {
   })
 })
 //trang sản phẩm
-var image, fullname;
-app.get('/product', (req, res) => {
 
-  res.render('home',
-    {
+app.get('/product', async (req, res) => {
+  await mongoose.connect(uri).then(console.log('ket noi db thanh cong'));
+  if(emailcheck){
+  
+    let products = await productModel.find({}).lean();
+    for (let i =0; i<products.length; i++) {
+      products[i].order = i + 1;
+    }
+    // chuyển đổi sang kiểu plain JavaScript object
+    res.render('home', {
       layout: 'product',
-      arrPro: arrProduct,
+      products: products,
       image: image,
-      fullname: fullname
-    });
+      fullname: fullname,
+      userId: userId,
 
-});
+      // không cần gọi phương thức .map() nữa
+    });
+  }else{
+      return res.send('ban chua dang nhap');
+    }
+  });
+
+
+
 //trang listUser
-app.get('/listUser', (req, res) => {
-  res.render('home',
-    {
+app.get('/listUser', async (req, res) => {
+
+  await mongoose.connect(uri);
+  if (role === 1) {
+    let users = await userModel.find({}).lean();
+    for (let i =0; i<users.length; i++) {
+      users[i].order = i + 1;
+    }
+    // chuyển đổi sang kiểu plain JavaScript object
+    res.render('home', {
       layout: 'listUser',
-      arr: arrUser,
-      _fullname: fullname,
-      _image: image,
+      users: users,
+      image: image,
+      fullname: fullname,
+
+      // không cần gọi phương thức .map() nữa
     });
-
+  } else {
+    return res.send('ban khong co quyen truy cap')
+  }
+  // console.log(users);
 });
-//trang thêm sản phẩm
 
+//trang update user
+app.get('/edit/:id', async (req, res) => {
+  
+  await mongoose.connect(uri).then(console.log('ket noi db thanh cong'));
+  const id = req.params.id;
+  userModel.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    .then(data => {
+      if (!data) {
+        res.status(404).send({ message: `can not update user with id ${id}. maybe user not found` });
+      } else {
+        if(role === 1){
+          res.render('home', {
+            layout: 'updateUser',
+            viewTitle: 'Update User',
+            data: data.toJSON(),
+            _image: image,
+            _fullname: fullname,
+          });
+        }else{
+          res.render('home', {
+            layout: 'updateUserForUser',
+            viewTitle: 'Update User',
+            data: data.toJSON(),
+            _image: image,
+            _fullname: fullname,
+          });
+        }
+        console.log(data);
+      }
+    });
+  
+});
+//post deer update user
+app.post('/updateUser', (req, res) => {
+  userModel.findOneAndUpdate({ _id: req.body.id }, req.body, { useFindAndModify: false })
+    .then(data => {
+      if (!data) {
+        console.log(`${data} not found`);
+        res.render('home', {
+          layout: 'updateUser',
+          viewTitle: 'Update False',
+          
+        });
+      } else {
+        res.redirect('/listUser')
+      }
+    })
+    .catch(err => {
+      res.send('Da ton tai email nay trong database');
+    })
+  console.log(req.body.id);
+});
+
+//post deer update user
+app.post('/updateUserForUser', (req, res) => {
+  userModel.findOneAndUpdate({ _id: req.body.id }, req.body, { useFindAndModify: false })
+    .then(data => {
+      if (!data) {
+        console.log(`${data} not found`);
+        res.render('home', {
+          layout: 'updateUserForUser',
+          viewTitle: 'Update False',
+          
+        });
+      } else {
+        res.redirect('/product')
+      }
+    })
+    .catch(err => {
+      res.send('Da ton tai email nay trong database');
+    })
+  console.log(req.body.id);
+});
+//delete user
+app.get('/delete/:id', async (req, res) => {
+  if(role === 1){
+  await mongoose.connect(uri).then(console.log('ket noi db thanh cong'));
+  const id = req.params.id;
+  userModel.findByIdAndDelete(id, req.body, { useFindAndModify: false })
+    .then(data => {
+      if (!data) {
+        res.status(404).send({ message: `cannot delete user with id ${id}. maybe user not found` });
+      } else {
+        res.redirect('/listUser');
+        console.log(data);
+
+      }
+    });
+  }else{
+    res.send('ban khong phai la admin');
+  }
+})
+//trang thêm sản phẩm
 app.get('/addProduct', (req, res) => {
-  res.render('home',
+  if(role === 1){
+    res.render('home',
     {
       layout: 'addProduct',
       _fullname: fullname,
       _image: image,
+      role: role
     });
+  }else{
+    res.send('ban khong phai admin');
+    res.redirect('/');
+  }
 
 });
 
-//tạo mảng user
-let arrUser = new Array();
-arrUser.push({ id: 1, email: 'nguyenhau123@gmail.com', password: 123, fullname: 'Nguyen Hau', image: 'https://znews-photo.zingcdn.me/w660/Uploaded/qhj_yvobvhfwbv/2018_07_18/Nguyen_Huy_Binh1.jpg' },
-  { id: 2, email: 'nguyenhau8209@gmail.com', password: 123, fullname: 'Hau Nguyen', image: 'https://haycafe.vn/wp-content/uploads/2021/11/hinh-anh-hoat-hinh-de-thuong-cute-dep-nhat.jpg' });
-
+var image, fullname, role, emailcheck, userId;
 //su kien login
-app.post('/login', (req, res) => {
-  const { email, password } = req.body;
+app.post('/login', async (req, res) => {
 
-  var emailRegex = /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
+  await mongoose.connect(uri).then(console.log("ket noi db thanh cong"));
   console.log(req.body);
-  console.log(arrUser);
-  let check;
-  for (let i = 0; i < arrUser.length; i++) {
-    const element = arrUser[i];
-    if (!email || !password) {
-      check = 'chua nhap du thong tin'
-    } else if (email != element.email || password != element.password) {
-      check = 'ban da nhap sai email hoac pass';
-    } else if (!emailRegex.test(email)) {
-      check = 'Vui long nhap dung dinh dang email';
-    } else {
-      res.redirect('/product')
-      image = element.image;
-      fullname = element.fullname;
-      console.log(fullname);
-      return;
-    }
 
-  }
-  res.render('home', {
-    layout: 'login',
-    check: check
-  });
+  const email = req.body.email;
+  const password = req.body.password;
+
+  userModel.findOne({ email: email, password: password })
+    .then(data => {
+      if (data) {
+        res.redirect('/product');
+        image = data.image;
+        fullname = data.fullname;
+        role = data.role;
+        emailcheck = data.email;
+        userId = data._id;
+        console.log('image: ', image, 'fullname: ', fullname, 'role: ', role);
+      } else {
+        res.json('email or password khong dung');
+      }
+    })
+    .catch(err => {
+      res.json('co loi cau database');
+    })
 })
+
+
+
 //sự kiện signin
-app.post('/signin', (req, res) => {
-  const { email, password, fullname, image } = req.body;
-  var emailRegex = /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
-  let objUser = { email: email, password: password, fullname: fullname, image: image };
-  console.log(req.body)
-  let check;
-
-  if (!email || !password || !fullname || !image) {
-    check = 'Vui long nhap du thong tin';
-    console.log(email);
-  } else if (!emailRegex.test(email)) {
-    check = 'Vui long nhap dung dinh dang email';
-  } else {
-    arrUser.push(objUser);
-    // res.json('dang ky thanh cong');
-    res.redirect('/');
-    console.log(arrUser);
-    return;
-  }
-  res.render('home', {
-    layout: 'signin',
-    check: check
-  })
-})
-
-//tạo mảng product
-let arrProduct = new Array();
-arrProduct.push({masp: 'QA1', namePro: 'Quần bò', price: 1000, imagePro: '', colorPro: 'black'})
-//su kien add product
-app.post('/addProduct', (req, res) =>{
-  const {masp, namePro, price, imagePro, colorPro} = req.body;
-
-  let objProduct = {masp : masp, namePro: namePro, price: price, imagePro: imagePro, colorPro: colorPro};
+app.post('/signin', async (req, res) => {
+  await mongoose.connect(uri).then(console.log('ket noi db thanh cong'));
   console.log(req.body);
-  let check;
-  if(!masp || !namePro || !price) {
-    check = 'Vui long nhập đủ thong tin yeu cau';
-  }else {
-    arrProduct.push(objProduct);
-    res.redirect('/product')
-    console.log(arrProduct);
-    return;
+
+  const email = req.body.email;
+  const password = req.body.password;
+  const fullname = req.body.fullname;
+  const image = req.body.image;
+  const role = req.body.role;
+
+  userModel.findOne({ email: email })
+    .then(data => {
+      if (data) {
+        res.json('email da ton tai')
+      } else {
+        return userModel.create({
+          email: email,
+          password: password,
+          fullname: fullname,
+          image: image,
+          role: role
+        });
+      }
+    })
+    .then(data => {
+      res.redirect('/');
+    })
+    .catch(err => {
+      res.json('tao tai khoan that bai')
+    })
+});
+
+
+//su kien add product
+app.post('/addProduct', async (req, res) => {
+  await mongoose.connect(uri).then(console.log('ket noi db thanh cong'));
+  if (role === 1) {
+    const masp = req.body.masp;
+    const namePro = req.body.namePro;
+    const price = req.body.price;
+    const imagePro = req.body.imagePro;
+    const colorPro = req.body.colorPro;
+
+    productModel.create({ masp: masp, namePro: namePro, price: price, imagePro: imagePro, colorPro: colorPro })
+      .then(data => {
+        res.redirect('/product');
+      })
+      .catch(err => {
+        res.json('them san pham that bai');
+      });
+  } else {
+    return res.send('ban khong phai la admin')
   }
-  res.render('home', {
-    layout: 'addProduct',
-    check: check,
-  })
+
+});
+//
+app.post('/updateProduct', (req, res) => {
+  productModel.findOneAndUpdate({ _id: req.body.id }, req.body, { useFindAndModify: false })
+    .then(data => {
+      if (!data) {
+        console.log(`${data} not found`);
+        res.render('home', {
+          layout: 'updateProduct',
+          viewTitle: 'Update False'
+        });
+      } else {
+        res.redirect('/product')
+      }
+    })
+    .catch(err => {
+      res.send(err.message);
+    })
+  console.log(req.body.idPro);
+
+})
+//update product
+app.get('/editPro/:id', (req, res) => {
+  if(role === 1){
+  const id = req.params.id;
+  productModel.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    .then(data => {
+      if (!data) {
+        res.status(404).send({ message: `cannot update user with id ${id}. maybe user not found` });
+      } else {
+        res.render('home', {
+          layout: 'updateProduct',
+          viewTitle: "Update Product",
+          data: data.toJSON(),
+          _image: image,
+          _fullname: fullname,
+        })
+        console.log(data);
+      }
+    })
+  }
+  else{
+    res.send('ban khong phai la admin');
+  }
+});
+app.get('/deletePro/:id', async (req, res) => {
+  if(role === 1){
+  await mongoose.connect(uri).then(console.log('ket noi db thanh cong'));
+  const id = req.params.id;
+  productModel.findByIdAndDelete(id, req.body, { useFindAndModify: false })
+    .then(data => {
+      if (!data) {
+        res.status(404).send({ message: `cannot delete user with id ${id}. maybe user not found` });
+      } else {
+        res.redirect('/product');
+        console.log(data);
+      }
+    });
+  }else{
+    res.send('ban khong phai la admin');
+  }
 })

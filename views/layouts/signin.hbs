@@ -25,15 +25,15 @@
 
 <body class="bg-success p-2 text-dark bg-opacity-25" style="height: 710px;">
     <div class="d-flex justify-content-center align-items-center w-100 h-100">
-        <div class=" w-[50%] h-[60%] border border-dark row">
+        <div class=" w-[50%] h-[75%] border border-dark row">
             <div class="col-4 bg-[#151D3B] text-center d-flex justify-content-center align-items-center">
                 <span class="text-[25px] fw-bold text-white">BANGKOK POINT</span>
             </div>
             <div class="col-8 bg-[#E9E9E9] d-flex justify-content-center align-items-center ">
-                <div class="w-[250px] h-[350px] bg-white rounded-[10px] p-4">
+                <div class="w-[250px] h-[450px] bg-white rounded-[10px] p-4">
                     <h2 class="w-[130px] fw-bold fs-5">Sign in your Acount</h2>
                     {{#if check}}
-                    <span style="color: red;">{{check}}</span>
+                    <span style="color: red; font-size: 12px;">{{check}}</span>
                     {{/if}}
                     <form action="/signin" method="post">
                         <div class="mb-1">
@@ -55,19 +55,25 @@
                             <label for="exampleFormControlInput1" class="form-label text-[12px] text-secondary">Image</label>
                             <input type="text" class="form-control" id="image" placeholder="url" name="image">
                         </div>
+                        <div class="mb-1">
+                            <label for="exampleFormControlInput1" class="form-label text-[12px] text-secondary">Role</label>
+                            <input type="number" class="form-control" id="role" placeholder="0/1" name="role">
+                        </div>
                         <div class="d-flex flex-row justify-content-center gx-5 mt-2">
                             <span class="d-flex justify-content-center align-items-center mt-2">
                                 <button
                                     class="w-[70px] h-[40px] border rounded-3 bg-cyan-500 text-white text-[14px]" type="submit">Sign
                                     in</button>
                             </span>
-                            <a href="http://localhost:3000/">
+                            <form action="/login">
+                            <a href="http://localhost:8000/">
                                 <span class="d-flex justify-content-center align-items-center mt-2">
 
-                                    <button
-                                        class="w-[70px] h-[40px] border rounded-3 bg-white text-black text-[14px] ml-2">Cancel</button>
+                                    <span
+                                        class="w-[70px] h-[40px] border rounded-3 bg-white text-black text-[14px] ml-2 text-center pt-2">Cancel</span>
                                 </span>
                             </a>
+                            </form>
                         </div>
                     </form>
 
